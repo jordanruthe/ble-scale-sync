@@ -209,9 +209,12 @@ export class QnScaleAdapter implements ScaleAdapter {
       // Older firmware: send legacy unlock variants on FFF2.
       // These work with Renpho, Sencor, and generic QN-Scale devices
       // that don't use the notification-driven handshake.
+      const unitByte = ctx.weightUnit === 'lbs' ? 0x02 : 0x01;
+      const unlock9 = [0x13, 0x09, 0x00, unitByte, 0x10, 0x00, 0x00, 0x00, 0x00];
+      unlock9[8] = unlock9.reduce((a, b) => a + b, 0) & 0xff;
       const unlocks = [
-        [0x13, 0x09, 0x00, 0x01, 0x01, 0x02],
-        [0x13, 0x09, 0x00, 0x01, 0x10, 0x00, 0x00, 0x00, 0x2d],
+        [0x13, 0x09, 0x00, unitByte, 0x01, 0x02],
+        unlock9,
       ];
       for (const cmd of unlocks) {
         await this.writeCmd(cmd);
@@ -500,8 +503,9 @@ export class QnScaleAdapter implements ScaleAdapter {
 
     // Step 3: 0x13 config
     // byte[3] = unit flag: 0x01 (kg) or 0x02 (lb) per openScale QNHandler.
-    // The Renpho app uses 0x08 which also works but switches the scale display to lb.
-    const cmd = [0x13, 0x09, this.seenProtocolType, 0x01, 0x10, 0x00, 0x00, 0x00, 0x00];
+    // 0x08 (Renpho app value) did not switch the physical LCD on the test device.
+    const unitByte = this.ctx?.weightUnit === 'lbs' ? 0x02 : 0x01;
+    const cmd = [0x13, 0x09, this.seenProtocolType, unitByte, 0x10, 0x00, 0x00, 0x00, 0x00];
     cmd[8] = cmd.reduce((a, b) => a + b, 0) & 0xff;
     await this.writeCmd(cmd);
   }

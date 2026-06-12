@@ -22,7 +22,7 @@ LABEL org.opencontainers.image.title="BLE Scale Sync" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.revision="${VCS_REF}" \
-      org.opencontainers.image.source="https://github.com/KristianP26/ble-scale-sync" \
+      org.opencontainers.image.source="https://github.com/jordanruthe/ble-scale-sync" \
       org.opencontainers.image.licenses="GPL-3.0"
 
 # System dependencies: BLE (BlueZ + D-Bus), Python (Garmin upload), tini (PID 1),

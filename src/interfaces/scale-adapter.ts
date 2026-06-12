@@ -115,6 +115,8 @@ export interface ConnectionContext {
    * whether `characteristics` is declared.
    */
   availableChars: ReadonlySet<string>;
+  /** Weight unit from user config ('kg' | 'lbs'). Adapters use this to set the scale's display unit. */
+  weightUnit: 'kg' | 'lbs';
 }
 
 export interface ScaleAdapter {

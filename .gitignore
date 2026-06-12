@@ -49,6 +49,9 @@ strava-tokens/
 # Data files
 *.csv
 
+# BT capture logs
+*.log
+
 # VitePress
 docs/.vitepress/dist/
 docs/.vitepress/cache/

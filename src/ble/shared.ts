@@ -122,6 +122,7 @@ function initializeAdapter(
   onNotification: (sourceUuid: string, data: Buffer) => void,
   unsubscribers: (() => void)[],
   scaleAuth?: ScaleAuth,
+  weightUnit: 'kg' | 'lbs' = 'kg',
 ): { start: () => Promise<void>; cleanup: () => void } {
   let unlockInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -142,6 +143,7 @@ function initializeAdapter(
         scaleAuth,
         deviceAddress,
         availableChars,
+        weightUnit,
         write: async (charUuid, data, withResponse = true) => {
           const char = resolveChar(charMap, charUuid);
           if (!char) throw new Error(`Characteristic ${charUuid} not found`);
@@ -373,6 +375,7 @@ export function waitForRawReading(
       handleNotification,
       unsubscribers,
       scaleAuth,
+      weightUnit,
     );
 
     bleDevice.onDisconnect(() => {
